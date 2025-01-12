@@ -1,7 +1,39 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
-// https://vite.dev/config/
+const __dirname = resolve();
+
 export default defineConfig({
-  plugins: [react()],
-})
+  base: '/',
+  server: {
+    port: 5000,
+    open: true,
+    cors: true,
+  },
+  build: {
+    outDir: 'dist',
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+      },
+      output: {
+        sourcemap: true,
+      },
+    },
+    target: 'esnext',
+  },
+  optimizeDeps: {
+    include: [
+      'express', 
+      'cors',
+      'dotenv',
+      'mongoose'
+    ],
+  },
+  plugins: [],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
+});
